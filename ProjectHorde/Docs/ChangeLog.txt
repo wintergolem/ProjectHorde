@@ -1,0 +1,21 @@
+.LOG
+12:52 Am 5/14/2014
+-Added health
+-Added Score
+-Added Fix purchasing
+-Fixes to inventory
+
+9:11 AM 5/14/2014
+ChangeLog for EndOfDay yesterday
+-Finished weapon and ammo purchasing
+-Started hud for guns
+-Added more the gun class
+
+10:20 AM 5/13/2014
+-Changed ListOfTasks to a Trello board
+
+10:10 AM 5/13/2014
+-Added ChangeLog and ListOfTasks text docs
+-Project started and on github
+-Player Controller build
+-Started building gun class

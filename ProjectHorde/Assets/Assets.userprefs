@@ -1,0 +1,31 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HordeGameScripts\PlayerScripts\GunClass.cs">
+    <Files>
+      <File FileName="Assets\HordeGameScripts\GameScripts\GameMangerScript.cs" Line="33" Column="17" />
+      <File FileName="Assets\HordeGameScripts\PlayerScripts\PlayerInventoryScript.cs" Line="54" Column="3" />
+      <File FileName="Assets\HordeGameScripts\PlayerScripts\PlayerController.cs" Line="26" Column="20" />
+      <File FileName="Assets\HordeGameScripts\PlayerScripts\GunClass.cs" Line="230" Column="36" />
+      <File FileName="Assets\HordeGameScripts\GameScripts\HUDManager.cs" Line="26" Column="1" />
+      <File FileName="Assets\HordeGameScripts\GameScripts\BuyBoardScript.cs" Line="38" Column="33" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="HordeGameScripts" expanded="True">
+              <Node name="GameScripts" expanded="True" />
+              <Node name="PlayerScripts" expanded="True">
+                <Node name="GunClass.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
