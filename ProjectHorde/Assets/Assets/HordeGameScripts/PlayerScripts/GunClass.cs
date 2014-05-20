@@ -44,26 +44,38 @@ public class GunClass
 			Reload();
 		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
 			return;
-		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
-		{
-			iCurrentAmmoInClip--;
-			bFired = true;
-			if( rayCastHit.collider.tag == "Enemy")
+//		if( fTimeSinceLastShot >= fTimeBetweenShots )
+//		{
+			if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
 			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
+				iCurrentAmmoInClip--;
+				bFired = true;
+				if( rayCastHit.collider.tag == "Enemy")
+				{
+					rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
+				}
 			}
-		}
+//		}
 	}
 
 	void RifleFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
 	{
-		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
-		{
-			if( rayCastHit.collider.tag == "Enemy")
+		if( iCurrentAmmoInClip <= 0 )
+			Reload();
+		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
+			return;
+//		if( fTimeSinceLastShot >= fTimeBetweenShots )
+//		{
+			if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
 			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
+				iCurrentAmmoInClip--;
+				bFired = true;
+				if( rayCastHit.collider.tag == "Enemy")
+				{
+					rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
+				}
 			}
-		}
+//		}
 	}
 
 	void ShotgunFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
@@ -72,28 +84,6 @@ public class GunClass
 	}
 
 	//Functions
-	void Init( string a_sName , int a_iMaxAmmo , int a_iMaxAmmoInClip , 
-	          float a_fDamage , float a_sps , float a_fRange ,
-	          float a_ReloadTime ,
-	          WeaponType a_weaponType , FireDelegate a_fire )
-	{
-		sName = a_sName;
-		iMaxAmmo = a_iMaxAmmo;
-		iMaxAmmoInClip = a_iMaxAmmoInClip;
-
-		iCurrentAmmo = iMaxAmmo - iMaxAmmoInClip;
-		iCurrentAmmoInClip = iMaxAmmoInClip;
-
-		fDamage = a_fDamage;
-		fShotsPerSecond = a_sps;
-		fTimeBetweenShots = 1 / fShotsPerSecond;
-
-		fRange = a_fRange;
-		fReloadTime = a_ReloadTime;
-		weaponType = a_weaponType;
-		Fire = a_fire;
-	}
-
 	public void RefillAmmo( int a_iFillAmount = 0 )
 	{
 		if( a_iFillAmount == 0 )
@@ -183,6 +173,30 @@ public class GunClass
 	RaycastHit rayCastHit;
 
 	//Initing for all guns avaible in game
+	void Init( string a_sName , int a_iMaxAmmo , int a_iMaxAmmoInClip , 
+	          float a_fDamage , float a_sps , float a_fRange ,
+	          float a_ReloadTime ,
+	          WeaponType a_weaponType , FireDelegate a_fire )
+	{
+		sName = a_sName;
+		iMaxAmmo = a_iMaxAmmo;
+		iMaxAmmoInClip = a_iMaxAmmoInClip;
+		
+		iCurrentAmmo = iMaxAmmo - iMaxAmmoInClip;
+		iCurrentAmmoInClip = iMaxAmmoInClip;
+		
+		fDamage = a_fDamage;
+		fShotsPerSecond = a_sps;
+		fTimeBetweenShots = 1 / fShotsPerSecond;
+		
+		fRange = a_fRange;
+		fReloadTime = a_ReloadTime;
+		weaponType = a_weaponType;
+		Fire = a_fire;
+	}
+	
+
+
 
 	public static GunClass InitFromString(string sGunName)
 	{
@@ -227,7 +241,7 @@ public class GunClass
 	public static GunClass Init_rt96()
 	{
 		GunClass gun = new GunClass ();
-		gun.Init ( "rt96" , 18, 9, 15, 15, 15, 10, WeaponType.Rifle, gun.RifleFire);
+		gun.Init ( "rt96" , 18, 9, 15, 15, 15, 1, WeaponType.Rifle, gun.RifleFire);
 		return gun;
 	}
 

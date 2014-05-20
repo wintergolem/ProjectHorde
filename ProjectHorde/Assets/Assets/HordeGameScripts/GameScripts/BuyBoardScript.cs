@@ -9,9 +9,9 @@ public class BuyBoardScript : MonoBehaviour {
 
 	public enum ReplenishType { Flat , Percentage };
 
-	public enum GunType { p9i8 , p0k6 , rt96 , DoubleBarrel };
 
-	public GunType gunType;
+
+    public GameMangerScript.GunType gunType;
 
 	public int iCostGunPurchase;
 	public int iCostAmmoPurchase;
@@ -75,7 +75,7 @@ public class BuyBoardScript : MonoBehaviour {
 	{
 		if( !gameManager.Player1Buy( iCostGunPurchase ) )//tell gameManager to purchase, if it tells us player cant, return
 			return;
-
+		gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
 		a_inventory.AddGun (GunClass.InitFromString(gunType.ToString() ) );
 	}
 	

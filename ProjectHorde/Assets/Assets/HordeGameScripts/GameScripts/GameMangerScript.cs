@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameMangerScript : MonoBehaviour {
 
+	public enum GunType { p9i8 , p0k6 , rt96 , DoubleBarrel };
+
 	public delegate void BuyDelegate(PlayerInventoryScript inventory);
 
 	public NavMeshAgent enemyNav;
