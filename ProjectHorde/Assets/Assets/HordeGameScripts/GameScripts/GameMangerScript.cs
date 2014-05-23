@@ -7,21 +7,31 @@ public class GameMangerScript : MonoBehaviour {
 
 	public delegate void BuyDelegate(PlayerInventoryScript inventory);
 
-	public NavMeshAgent enemyNav;
 	public GameObject player;
 	public HUDManager hudManager;
+	public GUIText guiText;
+
+
+	//private base variables
+	bool bCollidingBuyBoard = false;
+
+	int iNextMessageID = 0;
+	int iCurrentMessageID; //id for the current message bein displayed
+
+	//public base variables
 
 	//Score values
 	public int iPlayerScore = 0;
 	public int iKillScore;
 	public int iHeadShotScore;
 	public int iMeleeScore;
+	public int iCurrentWave {get; private set;}
 
 	PlayerInventoryScript playerInventory;
 
-	public GUIText guiText;
+	public EnemyManager enemyManager;
 
-	bool bCollidingBuyBoard = false;
+
 	public BuyDelegate buyDelegate;
 
 	public bool bGameOver; // used by everything else if check if game is over
@@ -35,6 +45,9 @@ public class GameMangerScript : MonoBehaviour {
 	void Update () 
 	{
 		guiText.text = playerInventory.gunInventory [playerInventory.iActiveIndex].sName;
+
+		if (enemyManager.enemies.Count <= 0)
+						enemyManager.IncreaseWave ();
 	}
 
 	void FixedUpdate()
@@ -61,6 +74,13 @@ public class GameMangerScript : MonoBehaviour {
 	{
 		bCollidingBuyBoard = false;
 		hudManager.EndDisplay ();
+	}
+
+	public int GetMessageID()//probably don't need
+		//, but is there is as a solution having multiple messages wanting to be displayed at one time
+	{
+		iNextMessageID++;
+		return iNextMessageID - 1;
 	}
 
 	public bool Player1Buy ( int a_iCost , bool a_bBuyIt = true)

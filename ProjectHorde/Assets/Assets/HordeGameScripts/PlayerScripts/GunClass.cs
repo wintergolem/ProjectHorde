@@ -44,18 +44,18 @@ public class GunClass
 			Reload();
 		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
 			return;
-//		if( fTimeSinceLastShot >= fTimeBetweenShots )
-//		{
-			if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
+
+		iCurrentAmmoInClip--;
+		bFired = true;
+
+		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
+		{
+			if( rayCastHit.collider.tag == "Enemy")
 			{
-				iCurrentAmmoInClip--;
-				bFired = true;
-				if( rayCastHit.collider.tag == "Enemy")
-				{
-					rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
-				}
+				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
 			}
-//		}
+		}
+
 	}
 
 	void RifleFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
@@ -64,23 +64,37 @@ public class GunClass
 			Reload();
 		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
 			return;
-//		if( fTimeSinceLastShot >= fTimeBetweenShots )
-//		{
-			if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
+		
+		iCurrentAmmoInClip--;
+		bFired = true;
+		
+		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
+		{
+			if( rayCastHit.collider.tag == "Enemy")
 			{
-				iCurrentAmmoInClip--;
-				bFired = true;
-				if( rayCastHit.collider.tag == "Enemy")
-				{
-					rayCastHit.collider.gameObject.SendMessage( "Shot" , SendMessageOptions.DontRequireReceiver );
-				}
+				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
 			}
-//		}
+		}
 	}
 
 	void ShotgunFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
 	{
+		if( iCurrentAmmoInClip <= 0 )
+			Reload();
+		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
+			return;
+		
+		iCurrentAmmoInClip--;
+		bFired = true;
 
+		//projectile 1
+		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
+		{
+			if( rayCastHit.collider.tag == "Enemy")
+			{
+				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
+			}
+		} 
 	}
 
 	//Functions

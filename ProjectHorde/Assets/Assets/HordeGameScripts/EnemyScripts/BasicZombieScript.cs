@@ -3,52 +3,84 @@ using System.Collections;
 
 public class BasicZombieScript : MonoBehaviour {
 
-	enum BasicZombieState { Stalking , Idle , Attacking };
-	BasicZombieState state;
-	public GameMangerScript gameManager;
+	float fHealth;
+	float fAmour;
 
+	Vector3 v3TargetLocPlayer;
+
+	public enum BasicZombieState { Stalking , Idle , Attacking , Dead};
+
+	public BasicZombieState tree_state;		//variable tree gets to set, this script checks against this state to handle transitions
+	public BasicZombieState state { get; protected set;}
+	
 	public NavMeshAgent nav;
-
+	
 	public float fAttackDistance;
+	[HideInInspector]
+	public EnemyManager manager; //after Instantiate, spawner will assign this variable
+
 	// Use this for initialization
 	void Start () 
 	{
-	
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		switch(state)
+		Perception ();
+		Decision ();
+		Controller ();
+	}
+
+	void Perception()
+	{
+		//omniscience
+		v3TargetLocPlayer = manager.GrabPlayerPos ();
+	}
+
+	void Decision()
+	{
+		//handled by enemyManager
+		if( state != BasicZombieState.Dead)
+			state = tree_state;
+
+		if (fHealth <= 0)
+			state = BasicZombieState.Dead;
+	}
+
+	void Controller()
+	{
+		switch( state)
 		{
-		case BasicZombieState.Stalking:
-			nav.SetDestination(gameManager.player.transform.position);
-			break;
 		case BasicZombieState.Attacking:
+			nav.enabled = false;
 			break;
 		case BasicZombieState.Idle:
+			nav.enabled = false;
+			break;
+		case BasicZombieState.Stalking:
+			nav.enabled = true;
+			nav.SetDestination( manager.GrabPlayerPos() );
+			break;
+		case BasicZombieState.Dead:
+			nav.enabled = false;
+			Destroy(gameObject);
 			break;
 		default:
 			break;
 		}
 	}
 
-	void SelectState()
+	public void Init( float a_fHealth , float a_fArmor )
 	{
-		//check if game is over
-		if( gameManager.bGameOver
+		fHealth = a_fHealth;
+		fAmour = a_fArmor;
+	}
 
-		   )
-			state = BasicZombieState.Idle;
-
-		//check if is close enough to attack
-		if( Vector3.Distance( transform.position , gameManager.player.transform.position ) <= fAttackDistance )
-		{
-			state = BasicZombieState.Attacking;
-		}
-		else
-		{
-			state = BasicZombieState.Stalking;
-		}
+	public void Shot( float a_fDamage )
+	{
+		fHealth -= a_fDamage - fAmour;
+		Debug.Log("hit - " + fHealth.ToString() + " health - " + (a_fDamage - fAmour).ToString() + " damage taken ( " + a_fDamage.ToString() + " )" );
 	}
 }
