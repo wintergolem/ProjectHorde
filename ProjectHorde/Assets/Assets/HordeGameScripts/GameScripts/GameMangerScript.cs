@@ -52,7 +52,7 @@ public class GameMangerScript : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		//enemyNav.SetDestination (player.transform.position);
+		
 	}
 
 	public void ActivateButton()
