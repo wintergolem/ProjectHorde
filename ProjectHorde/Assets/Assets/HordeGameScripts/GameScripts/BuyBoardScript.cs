@@ -75,7 +75,7 @@ public class BuyBoardScript : MonoBehaviour {
 	{
 		if( !gameManager.Player1Buy( iCostGunPurchase ) )//tell gameManager to purchase, if it tells us player cant, return
 			return;
-		gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
+		gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
 		a_inventory.AddGun (GunClass.InitFromString(gunType.ToString() ) );
 	}
 	
@@ -83,7 +83,7 @@ public class BuyBoardScript : MonoBehaviour {
 	{
 		if( c.tag == "Player" )
 		{
-			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
+			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
 		}
 	}
 

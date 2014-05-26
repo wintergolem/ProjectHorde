@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class GunClass 
 {
@@ -97,6 +98,32 @@ public class GunClass
 		} 
 	}
 
+	void SniperFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
+	{
+		if( iCurrentAmmoInClip <= 0 )
+			Reload();
+		if( (iCurrentAmmo <= 0 && iCurrentAmmoInClip <= 0) || bReloading || bFired)
+			return;
+		
+		iCurrentAmmoInClip--;
+		bFired = true;
+		
+		RaycastHit[] hits = Physics.RaycastAll( a_v3Origin , a_v3Direction , fRange ).OrderBy(h=>h.distance).ToArray();
+		for( int i = 0; i < hits.Length ; i ++ )
+		{
+			rayCastHit = hits[i];
+			if( rayCastHit.collider.tag == "Enemy")
+			{
+				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
+			}
+			else 
+			{
+				break;
+			}
+		}
+
+	}
+
 	//Functions
 	public void RefillAmmo( int a_iFillAmount = 0 )
 	{
@@ -116,6 +143,8 @@ public class GunClass
 
 	void Upgrade( int a_NewMaxAmmo , int a_NewMaxClipAmmo , float a_fNewDamage , float a_NewSPS , float a_NewRange , FireDelegate a_fire )
 	{
+		if (bUpgraded)
+						return;
 		iMaxAmmo = a_NewMaxAmmo;
 		iMaxAmmoInClip = a_NewMaxClipAmmo;
 		fDamage = a_fNewDamage;

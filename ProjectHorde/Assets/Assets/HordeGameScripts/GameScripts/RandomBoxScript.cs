@@ -119,7 +119,7 @@ public class RandomBoxScript : MonoBehaviour {
 		if( c.tag == "Player" )
 		{
 			gameManager.EndDisplay();
-			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , state == RandomBoxStates.OpenAndChoose?  (GameMangerScript.BuyDelegate)BuyGun : (GameMangerScript.BuyDelegate)ActivateBox ) ;
+			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , state == RandomBoxStates.OpenAndChoose?  (GameMangerScript.BuyDelegate)BuyGun : (GameMangerScript.BuyDelegate)ActivateBox ) ;
 		}
 	}
 	

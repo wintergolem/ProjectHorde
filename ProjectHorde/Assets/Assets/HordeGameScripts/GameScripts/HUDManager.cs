@@ -36,4 +36,11 @@ public class HUDManager : MonoBehaviour {
 	{
 		instruction.text = "";
 	}
+
+	public bool CompareInstruction(string a_string)
+	{
+		if (a_string == instruction.text)
+			return true;
+		return false;
+	}
 }

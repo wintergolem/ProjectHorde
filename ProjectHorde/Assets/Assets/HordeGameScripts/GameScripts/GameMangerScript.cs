@@ -20,6 +20,8 @@ public class GameMangerScript : MonoBehaviour {
 
 	//public base variables
 
+	public bool bPowerOn = false;
+
 	//Score values
 	public int iPlayerScore = 0;
 	public int iKillScore;
@@ -63,10 +65,10 @@ public class GameMangerScript : MonoBehaviour {
 		}
 	}
 
-	public void DisplayInstruction( string a_instruction , BuyDelegate a_delegate )
+	public void DisplayInstruction( string a_instruction , bool a_UseDelegate , BuyDelegate a_delegate )
 	{
 		hudManager.DisplayInstruction (a_instruction);
-		bCollidingBuyBoard = true;
+		bCollidingBuyBoard = a_UseDelegate;
 		buyDelegate = a_delegate;
 	}
 
@@ -74,6 +76,15 @@ public class GameMangerScript : MonoBehaviour {
 	{
 		bCollidingBuyBoard = false;
 		hudManager.EndDisplay ();
+	}
+
+	public void EndDisplay( string a_string)
+	{
+		if (hudManager.CompareInstruction (a_string))
+		{
+			hudManager.EndDisplay ();
+			bCollidingBuyBoard = false;
+		}
 	}
 
 	public int GetMessageID()//probably don't need
@@ -95,4 +106,8 @@ public class GameMangerScript : MonoBehaviour {
 		return false; //player cant afford it
 	}
 
+	public void TurnOnPower()
+	{
+		bPowerOn = true;
+	}
 }
