@@ -75,4 +75,15 @@ public class PlayerInventoryScript : MonoBehaviour {
 			gunInventory[iActiveIndex != 0 ? iActiveIndex : iActiveIndex++] = gun;
 		}
 	}
+
+    public bool HaveGun( string a_sGunName)
+    {//make more efficient
+        for( int i = 0; i < gunInventory.Length -1; i++)
+        {
+            if (gunInventory[i] == null) continue;
+            if (gunInventory[i].sName == a_sGunName)
+                return true;
+        }
+        return false;
+    }
 }

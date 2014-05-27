@@ -3,7 +3,10 @@ using System.Collections;
 
 public class GameMangerScript : MonoBehaviour {
 
-	public enum GunType { p9i8 , p0k6 , rt96 , DoubleBarrel };
+
+    PlayerInventoryScript playerInventory;
+
+	public enum GunType { p9i8 , p0k6 , rt96 , DoubleBarrel , FarSight };
 
 	public delegate void BuyDelegate(PlayerInventoryScript inventory);
 
@@ -11,45 +14,62 @@ public class GameMangerScript : MonoBehaviour {
 	public HUDManager hudManager;
 	public GUIText guiText;
 
+    public EnemyManager enemyManager;
+
+
+    public BuyDelegate buyDelegate;
+
 
 	//private base variables
 	bool bCollidingBuyBoard = false;
+   
 
 	int iNextMessageID = 0;
 	int iCurrentMessageID; //id for the current message bein displayed
 
+    float fTimeSinceEndOfLastWave = 0;
+
 	//public base variables
-
+    public bool bBetweenWaves = true;
 	public bool bPowerOn = false;
+    public bool bGameOver; // used by everything else if check if game is over
 
-	//Score values
 	public int iPlayerScore = 0;
 	public int iKillScore;
 	public int iHeadShotScore;
 	public int iMeleeScore;
-	public int iCurrentWave {get; private set;}
+    public int iCurrentWave {get; private set;}
 
-	PlayerInventoryScript playerInventory;
+    public float fTimeBetweenWaves = 10;
 
-	public EnemyManager enemyManager;
-
-
-	public BuyDelegate buyDelegate;
-
-	public bool bGameOver; // used by everything else if check if game is over
 	// Use this for initialization
 	void Start () 
 	{
 		playerInventory = player.GetComponent<PlayerInventoryScript> ();
+        iCurrentWave = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+        //remove this \|/
 		guiText.text = playerInventory.gunInventory [playerInventory.iActiveIndex].sName;
-
-		if (enemyManager.enemies.Count <= 0)
-						enemyManager.IncreaseWave ();
+        if(bBetweenWaves)
+        {
+            fTimeSinceEndOfLastWave += Time.deltaTime;
+            if( fTimeSinceEndOfLastWave >= fTimeBetweenWaves)
+            {
+                bBetweenWaves = false;
+                iCurrentWave++;
+                enemyManager.IncreaseWave();
+            }
+        }
+        else if (enemyManager.enemies.Count <= 0 && enemyManager.AllEnemiesSpawned())
+        {
+            bBetweenWaves = true;
+            fTimeSinceEndOfLastWave = 0;
+           
+        }
 	}
 
 	void FixedUpdate()
@@ -110,4 +130,9 @@ public class GameMangerScript : MonoBehaviour {
 	{
 		bPowerOn = true;
 	}
+
+    public bool PlayerHaveGun( string a_sGunName)
+    {
+        return playerInventory.HaveGun(a_sGunName);
+    }
 }

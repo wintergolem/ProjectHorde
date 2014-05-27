@@ -6,6 +6,8 @@ public class BasicZombieScript : MonoBehaviour {
 	float fHealth;
 	float fAmour;
 
+    int iWave; //wave spawned on
+
 	Vector3 v3TargetLocPlayer;
 
 	public enum BasicZombieState { Stalking , Idle , Attacking , Dead};
@@ -22,7 +24,7 @@ public class BasicZombieScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-
+        iWave = manager.manager.iCurrentWave;
 	}
 	
 	// Update is called once per frame

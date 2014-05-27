@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour {
 
 	BehaviorTree tree;
 
-	GameMangerScript manager;
+	public GameMangerScript manager; //temp public
 
 	bool bReuseable;
 
@@ -31,7 +31,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public List<BasicZombieScript> enemies;
 
-	public float fTimeBetweenSpawns;
+	//public float fTimeBetweenSpawns;
 	public float fEnemyStartingHealth = 10;
 	public float fEnemyStartingArmor = 0;
 	public float fEnemyHealthIncreasePerWave = 5;
@@ -39,6 +39,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public List<SpawnerScript> spawners;
 
+    public Vector2 v2SpawnVari;
 	public Vector3 v3target;
 
 	//private functions
@@ -61,13 +62,16 @@ public class EnemyManager : MonoBehaviour {
 
 	void Update () 
 	{
+        //spawn new enemies
 		fTimeSinceLastSpawn += Time.deltaTime;
-		if( fTimeSinceLastSpawn > fTimeBetweenSpawns && iCurrentWaveEnemyCount < iStartingEnemyCount + iEnemyCountIncreaseAmount*manager.iCurrentWave)
-		{
-			AddEnemy();
-		}
+		if( iCurrentWaveEnemyCount < iStartingEnemyCount + (iEnemyCountIncreaseAmount * manager.iCurrentWave ) )
+            if( fTimeSinceLastSpawn >= Random.Range(v2SpawnVari.x , v2SpawnVari.y ) )
+		    {
+                fTimeSinceLastSpawn = 0;
+			    AddEnemy();
+		    }
 
-		do{
+		do{//remove dead enemies
 			bReuseable = false;
 			for( int i = 0 ; i < enemies.Count ; i++ )
 			{
@@ -83,11 +87,14 @@ public class EnemyManager : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		for(int i = 0 ; i < enemies.Count ; i++ )
-		{
-			if( enemies[i] != null)
-				RunThroughTree(enemies[i]);
-		}
+        if (!manager.bBetweenWaves)
+        {
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i] != null)
+                    RunThroughTree(enemies[i]);
+            }
+        }
 	}
 
 	void AddEnemy()
@@ -96,7 +103,7 @@ public class EnemyManager : MonoBehaviour {
 			return;
 		do
 		{
-			iSpawnerIndex = Random.Range (0, spawners.Count -1);
+			iSpawnerIndex = Random.Range (0, spawners.Count);
 			temp = spawners [iSpawnerIndex].Spawn (enemyPrefab, this);
 		}while( temp == null ) ;
 		enemies.Add (temp);
@@ -142,4 +149,13 @@ public class EnemyManager : MonoBehaviour {
 		if( bDistracted)
 			v3target = a_v3NewTarget;
 	}
+
+    public bool AllEnemiesSpawned()
+    {
+        if (iCurrentWaveEnemyCount == iStartingEnemyCount + (iEnemyCountIncreaseAmount * manager.iCurrentWave))
+            return true;
+        else if (iCurrentWaveEnemyCount > iStartingEnemyCount + (iEnemyCountIncreaseAmount * manager.iCurrentWave))
+            print("Error too any enemies spawned - EnemyManagerScript - AllEnemiesSpawned()");
+        return false;
+    }
 }

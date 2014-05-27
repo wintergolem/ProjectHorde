@@ -87,15 +87,36 @@ public class GunClass
 		
 		iCurrentAmmoInClip--;
 		bFired = true;
-
+        Vector3 rot = new Vector3() ;
 		//projectile 1
-		if( Physics.Raycast( a_v3Origin , a_v3Direction , out rayCastHit , fRange ) )
-		{
-			if( rayCastHit.collider.tag == "Enemy")
-			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
-			}
-		} 
+        float rand;
+        for (int i = 0; i < 4; i++)
+        {
+            rand = Random.value;
+            switch (i)
+            {
+                case 0:
+                    rot = Vector3.zero;
+                    break;
+                case 1:
+                    rot = new Vector3(rand, 0, 0);
+                    break;
+                case 2:
+                    rot = new Vector3(0, rand, 0);
+                    break;
+                case 3:
+                    rot = new Vector3(0, 0, rand);
+                    break;
+            }
+            if (Physics.Raycast(a_v3Origin, a_v3Direction + rot, out rayCastHit, fRange))
+            {
+                if (rayCastHit.collider.tag == "Enemy")
+                {
+                    rayCastHit.collider.gameObject.SendMessage("Shot", fDamage, SendMessageOptions.DontRequireReceiver);
+                }
+            }
+            Debug.DrawRay(a_v3Origin, a_v3Direction + rot, Color.cyan , 5 , false);
+        }
 	}
 
 	void SniperFire( Vector3 a_v3Direction , Vector3 a_v3Origin )
@@ -238,9 +259,7 @@ public class GunClass
 		Fire = a_fire;
 	}
 	
-
-
-
+    //After adding new gun, add name to GameManagerScript's enum
 	public static GunClass InitFromString(string sGunName)
 	{
 		switch (sGunName)
@@ -253,6 +272,8 @@ public class GunClass
 			return Init_rt96();
 		case "DoubleBarrel":
 			return Init_DoubleBarrel();
+        case "FarSight":
+            return Init_FarSight();
 		default:
 			return Init_ErrorGun();
 		}
@@ -268,14 +289,14 @@ public class GunClass
 	public static GunClass Init_P9i8()
 	{
 		GunClass gun = new GunClass ();
-		gun.Init ( "p9i8" , 1800, 9, 15, 4, 15, 1, WeaponType.Pistol, gun.PistolFire);
+		gun.Init ( "p9i8" , 1800, 9, 45, 4, 15, 1, WeaponType.Pistol, gun.PistolFire);
 		return gun;
 	}
 	//p0k6
 	public static GunClass Init_P0k6()
 	{
 		GunClass gun = new GunClass ();
-		gun.Init ( "p0k6" , 32, 9, 50, 8, 15, 0.4f, WeaponType.Pistol, gun.PistolFire);
+		gun.Init ( "p0k6" , 32, 9, 90, 8, 15, 0.4f, WeaponType.Pistol, gun.PistolFire);
 		return gun;
 	}
 
@@ -284,7 +305,7 @@ public class GunClass
 	public static GunClass Init_rt96()
 	{
 		GunClass gun = new GunClass ();
-		gun.Init ( "rt96" , 18, 9, 15, 15, 15, 1, WeaponType.Rifle, gun.RifleFire);
+		gun.Init ( "rt96" , 260, 15, 80, 10, 50, 0.7f, WeaponType.Rifle, gun.RifleFire);
 		return gun;
 	}
 
@@ -293,7 +314,16 @@ public class GunClass
 	public static GunClass Init_DoubleBarrel()
 	{
 		GunClass gun = new GunClass ();
-		gun.Init ( "DoubleBarrel" , 18, 2, 150, 0.5f, 20, 10, WeaponType.Rifle, gun.ShotgunFire);
+		gun.Init ( "DoubleBarrel" , 18, 2, 150, 0.5f, 20, 1, WeaponType.Rifle, gun.ShotgunFire);
 		return gun;
 	}
+
+    //Snipers
+    //FarSight
+    public static GunClass Init_FarSight()
+    {
+        GunClass gun = new GunClass();
+        gun.Init("FarySight", 30, 2, 300, 0.3f, 200, 1, WeaponType.Rifle, gun.SniperFire);
+        return gun;
+    }
 }

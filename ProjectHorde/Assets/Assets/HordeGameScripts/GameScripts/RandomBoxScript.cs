@@ -52,7 +52,10 @@ public class RandomBoxScript : MonoBehaviour {
 		case RandomBoxStates.OpenAndPicking:
 			if( !bGunFound )
 			{
-				gunType = (GameMangerScript.GunType)(Random.Range(0,iTotalNumOfGunTypes) );
+                do
+                {
+                    gunType = (GameMangerScript.GunType)(Random.Range(0, iTotalNumOfGunTypes));
+                } while (gameManager.PlayerHaveGun(gunType.ToString()));
 				bGunFound = true;
 			}
 
