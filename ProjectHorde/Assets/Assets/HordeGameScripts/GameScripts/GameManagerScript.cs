@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameMangerScript : MonoBehaviour {
+public class GameManagerScript : MonoBehaviour {
 
 
     PlayerInventoryScript playerInventory;
 
-	public enum GunType { p9i8 , p0k6 , rt96 , DoubleBarrel , FarSight };
+	public enum GunType { ErrorGun , p9i8 , p0k6 , rt96 , DoubleBarrel , FarSight };
+    public enum ScoreType { EnemyShot , HeadShot , EnemyKilled , HeadShotKill , Melee , MeleeKill};
 
 	public delegate void BuyDelegate(PlayerInventoryScript inventory);
 
 	public GameObject player;
 	public HUDManager hudManager;
-	public GUIText guiText;
 
     public EnemyManager enemyManager;
 
@@ -35,6 +35,7 @@ public class GameMangerScript : MonoBehaviour {
     public bool bGameOver; // used by everything else if check if game is over
 
 	public int iPlayerScore = 0;
+    public int iEnemyShotScore;
 	public int iKillScore;
 	public int iHeadShotScore;
 	public int iMeleeScore;
@@ -52,8 +53,6 @@ public class GameMangerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-        //remove this \|/
-		guiText.text = playerInventory.gunInventory [playerInventory.iActiveIndex].sName;
         if(bBetweenWaves)
         {
             fTimeSinceEndOfLastWave += Time.deltaTime;
@@ -134,5 +133,33 @@ public class GameMangerScript : MonoBehaviour {
     public bool PlayerHaveGun( string a_sGunName)
     {
         return playerInventory.HaveGun(a_sGunName);
+    }
+
+    public void Player1Score ( ScoreType a_type)
+    {
+        switch (a_type)
+        {
+            case ScoreType.EnemyShot:
+                iPlayerScore += iEnemyShotScore;
+                break;
+            case ScoreType.EnemyKilled:
+                iPlayerScore += iKillScore;
+                break;
+            case ScoreType.HeadShot:
+                iPlayerScore += iHeadShotScore;
+                break;
+            case ScoreType.HeadShotKill:
+                iPlayerScore += iHeadShotScore + iKillScore;
+                break;
+            case ScoreType.Melee:
+                iPlayerScore += iMeleeScore;
+                break;
+            case ScoreType.MeleeKill:
+                iPlayerScore += iMeleeScore + iKillScore;
+                break;
+            default:
+                Debug.LogError("Bad ScoreType - Player1Score() - GameManagerScript");
+                break;
+        }
     }
 }

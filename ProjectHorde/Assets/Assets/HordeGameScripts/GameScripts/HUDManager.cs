@@ -4,7 +4,7 @@ using System.Collections;
 public class HUDManager : MonoBehaviour {
     enum TextState { normal , whiteOut , clearOut , whiteIn , clearIn , clear };
     TextState waveTextState;
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 	PlayerInventoryScript playerInventory;
     GunClass activeGun;
 
@@ -12,6 +12,9 @@ public class HUDManager : MonoBehaviour {
 	public GUIText weaponAmmo;
 	public GUIText instruction;
     public GUIText waveCount;
+    public GUIText score;
+    public GUIText fired;
+    public GUIText reloading;
 
     //private base variables
     float fTimeTextTransition = 0;
@@ -26,21 +29,48 @@ public class HUDManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript>();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript>();
 		playerInventory = gameManager.player.GetComponent<PlayerInventoryScript> ();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+        //get active gun
 		activeGun = playerInventory.gunInventory [playerInventory.iActiveIndex];
-
+        //display active gun
 		weaponAmmo.text = activeGun.AmmoToString ();
 		weaponName.text = activeGun.sName;
-        print(gameManager.bBetweenWaves.ToString() + "  " + bBetweenWave.ToString());
-        if( gameManager.bBetweenWaves != bBetweenWave)
+       //wave count
+        waveCount.text = gameManager.iCurrentWave.ToString();
+        //wave count text color
+        UpdateWaveTextColor();
+        //score
+        score.text = "Score: " + gameManager.iPlayerScore;
+
+        //due to lack of art
+
+        //reloading
+        if (playerInventory.gunInventory[playerInventory.iActiveIndex].bReloading)
+            reloading.enabled = true;
+        else
+            reloading.enabled = false;
+        //fire rate display
+        if (playerInventory.gunInventory[playerInventory.iActiveIndex].bFired)
         {
-            if( !bBetweenWave)
+            fired.enabled = true;
+        }
+        else
+            fired.enabled = false;
+            
+
+	}
+
+    void UpdateWaveTextColor()
+    {
+        if (gameManager.bBetweenWaves != bBetweenWave)
+        {
+            if (!bBetweenWave)
             {
                 //wave ended
                 if (waveTextState == TextState.normal) //check to make sure text hasn't already started its process
@@ -54,13 +84,7 @@ public class HUDManager : MonoBehaviour {
             }
             bBetweenWave = gameManager.bBetweenWaves;
         }
-        waveCount.text = gameManager.iCurrentWave.ToString();
 
-        UpdateWaveTextColor();
-	}
-
-    void UpdateWaveTextColor()
-    {
         fTimeTextTransition += Time.deltaTime;
         switch( waveTextState )
         {

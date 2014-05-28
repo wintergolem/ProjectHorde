@@ -16,7 +16,9 @@ public class BasicZombieScript : MonoBehaviour {
 	public BasicZombieState state { get; protected set;}
 	
 	public NavMeshAgent nav;
-	
+
+    public Transform headTrans;
+
 	public float fAttackDistance;
 	[HideInInspector]
 	public EnemyManager manager; //after Instantiate, spawner will assign this variable
@@ -80,9 +82,29 @@ public class BasicZombieScript : MonoBehaviour {
 		fAmour = a_fArmor;
 	}
 
-	public void Shot( float a_fDamage )
+    public void HeadShot( float a_fDamage)
+    {
+        fHealth -= a_fDamage;
+        if (fHealth > 0)
+            manager.PlayerScorePassThrough(GameManagerScript.ScoreType.HeadShot);
+        else
+            manager.PlayerScorePassThrough(GameManagerScript.ScoreType.HeadShotKill);
+        //Debug.Log("Headshot - " + fHealth.ToString() + " health - " + (a_fDamage).ToString() + " damage taken");
+    }
+
+	public void Shot( Vector2 a_v2DamgeYcoord)
 	{
-		fHealth -= a_fDamage - fAmour;
-		Debug.Log("hit - " + fHealth.ToString() + " health - " + (a_fDamage - fAmour).ToString() + " damage taken ( " + a_fDamage.ToString() + " )" );
+        //print(a_v2DamgeYcoord.y.ToString());
+        if (a_v2DamgeYcoord.y > headTrans.position.y)
+            HeadShot(a_v2DamgeYcoord.x);
+        else
+        {
+            fHealth -= a_v2DamgeYcoord.x - fAmour;
+            if (fHealth > 0)
+                manager.PlayerScorePassThrough(GameManagerScript.ScoreType.EnemyShot);
+            else
+                manager.PlayerScorePassThrough(GameManagerScript.ScoreType.EnemyKilled);
+            //Debug.Log("hit - " + fHealth.ToString() + " health - " + (a_v2DamgeYcoord.x - fAmour).ToString() + " damage taken ( " + a_v2DamgeYcoord.x.ToString() + " )");
+        }
 	}
 }

@@ -11,7 +11,7 @@ public class TeleporterScript : MonoBehaviour {
 	public float fCoolDownTime = 1;
 
 	//private unique variables
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 
 	//private base variables
 	bool bActive = false;
@@ -26,7 +26,7 @@ public class TeleporterScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript> ();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript> ();
 	}
 	
 	// Update is called once per frame
@@ -86,7 +86,7 @@ public class TeleporterScript : MonoBehaviour {
 			else if(bCoolingDown )
 				gameManager.DisplayInstruction("Cooling Down" , false, null); //if text is changed, change Reset() text too
 			else if(bPressToActivate)
-				gameManager.DisplayInstruction("Activate to Teleport" , true , (GameMangerScript.BuyDelegate)(Teleport));
+				gameManager.DisplayInstruction("Activate to Teleport" , true , (GameManagerScript.BuyDelegate)(Teleport));
 			else
 				Teleport(gameManager.player);
 		}
@@ -107,7 +107,7 @@ public class TeleporterScript : MonoBehaviour {
 
 	public void Teleport( GameObject a_player )
 	{
-		a_player.transform.position = placesToSpawn [Random.Range (0, placesToSpawn.Length +1)].position; //plus due to Random.Range excludive max
+		a_player.transform.position = placesToSpawn [Random.Range (0, placesToSpawn.Length)].position; //plus due to Random.Range excludive max
 		bCoolingDown = true;
 	}
 }

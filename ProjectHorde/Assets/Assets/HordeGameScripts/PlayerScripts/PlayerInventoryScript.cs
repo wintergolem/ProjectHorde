@@ -31,6 +31,17 @@ public class PlayerInventoryScript : MonoBehaviour {
 		}
 	}
 
+    void FixedUpdate()
+    {
+        string prin = "";
+        for(int i = 0; i < gunInventory.Length ; i++)
+        {
+            if (gunInventory[i] != null)
+                prin += gunInventory[i].sName + "  ";
+        }
+        print(prin);
+    }
+
 	void RotateInventory( bool a_bForward)
 	{
 		if(a_bForward)
@@ -59,20 +70,23 @@ public class PlayerInventoryScript : MonoBehaviour {
 	{
 		if( gun.weaponType == GunClass.WeaponType.Pistol )
 		{
+            print("added pistol");
 			gunInventory[0] = gun;
 		}
 		else
 		{
-			for( int i =0; i < iMaxIndex ; i++ )//find empty slot
+			for( int i =0; i < iMaxIndex +1 ; i++ )//find empty slot
 			{
 				if( gunInventory[i] == null)
 				{
 					gunInventory[i] = gun; //fill it with the gun
+                    print("filled empty slot " + i.ToString());
 					return;					//and we're done
 				}
 			}
 			//no empty slots, replace current gun, unless it's a pistol, then replace next gun
 			gunInventory[iActiveIndex != 0 ? iActiveIndex : iActiveIndex++] = gun;
+            print("no empty slots");
 		}
 	}
 

@@ -5,13 +5,13 @@ public class BuyBoardScript : MonoBehaviour {
 
 	enum BuyBoardState { Ammo , Gun };
 	BuyBoardState state;
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 
 	public enum ReplenishType { Flat , Percentage };
 
 
 
-    public GameMangerScript.GunType gunType;
+    public GameManagerScript.GunType gunType;
 
 	public int iCostGunPurchase;
 	public int iCostAmmoPurchase;
@@ -23,7 +23,7 @@ public class BuyBoardScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript>();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript>();
 	}
 	
 	// Update is called once per frame
@@ -75,7 +75,7 @@ public class BuyBoardScript : MonoBehaviour {
 	{
 		if( !gameManager.Player1Buy( iCostGunPurchase ) )//tell gameManager to purchase, if it tells us player cant, return
 			return;
-		gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
+		gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameManagerScript.BuyDelegate)BuyAmmo : (GameManagerScript.BuyDelegate)BuyGun) );
 		a_inventory.AddGun (GunClass.InitFromString(gunType.ToString() ) );
 	}
 	
@@ -83,7 +83,7 @@ public class BuyBoardScript : MonoBehaviour {
 	{
 		if( c.tag == "Player" )
 		{
-			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
+			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , (state == BuyBoardState.Ammo ? (GameManagerScript.BuyDelegate)BuyAmmo : (GameManagerScript.BuyDelegate)BuyGun) );
 		}
 	}
 

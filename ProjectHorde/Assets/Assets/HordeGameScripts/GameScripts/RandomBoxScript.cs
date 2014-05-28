@@ -11,14 +11,15 @@ public class RandomBoxScript : MonoBehaviour {
 
 	enum RandomBoxStates { Closed, OpenAndPicking , OpenAndChoose , Closing };
 	RandomBoxStates state;
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 
-	GameMangerScript.GunType gunType;
+	GameManagerScript.GunType gunType;
 
 	//private basic variables
 	bool bGunFound = false;
 
 	int iTotalNumOfGunTypes;
+    int iTimesLooped = 0;
 
 	float fCurrentOpenTime;
 
@@ -34,9 +35,9 @@ public class RandomBoxScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript> ();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript> ();
 
-		iTotalNumOfGunTypes = System.Enum.GetNames (typeof( GameMangerScript.GunType)).Length;
+		iTotalNumOfGunTypes = System.Enum.GetNames (typeof( GameManagerScript.GunType)).Length;
 	}
 	
 	// Update is called once per frame
@@ -54,9 +55,13 @@ public class RandomBoxScript : MonoBehaviour {
 			{
                 do
                 {
-                    gunType = (GameMangerScript.GunType)(Random.Range(0, iTotalNumOfGunTypes));
-                } while (gameManager.PlayerHaveGun(gunType.ToString()));
+                    iTimesLooped++;
+                    gunType = (GameManagerScript.GunType)(Random.Range(1, iTotalNumOfGunTypes));
+                } while (gameManager.PlayerHaveGun(gunType.ToString()) || iTimesLooped > iTotalNumOfGunTypes);
+                iTimesLooped = 0;
 				bGunFound = true;
+                if (iTimesLooped > iTotalNumOfGunTypes)
+                    gunType = GameManagerScript.GunType.ErrorGun;
 			}
 
 			if( fCurrentOpenTime >= fPickingTime )
@@ -85,10 +90,11 @@ public class RandomBoxScript : MonoBehaviour {
 
 	void BuyGun( PlayerInventoryScript a_inventory )
 	{
-		if( !gameManager.Player1Buy( iCost ) )//tell gameManager to purchase, if it tells us player cant, return
+		if( !gameManager.Player1Buy( iCost ) || state != RandomBoxStates.OpenAndChoose)//tell gameManager to purchase, if it tells us player cant, return
 			return;
 		//gameManager.DisplayInstruction( SelectInstruction( gameManager.player.GetComponent<PlayerInventoryScript>() ) , (state == BuyBoardState.Ammo ? (GameMangerScript.BuyDelegate)BuyAmmo : (GameMangerScript.BuyDelegate)BuyGun) );
 		a_inventory.AddGun (GunClass.InitFromString(gunType.ToString() ) );
+        state = RandomBoxStates.Closing;
 		gameManager.EndDisplay ();
 	}
 
@@ -122,7 +128,7 @@ public class RandomBoxScript : MonoBehaviour {
 		if( c.tag == "Player" )
 		{
 			gameManager.EndDisplay();
-			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , state == RandomBoxStates.OpenAndChoose?  (GameMangerScript.BuyDelegate)BuyGun : (GameMangerScript.BuyDelegate)ActivateBox ) ;
+			gameManager.DisplayInstruction( SelectInstruction( c.gameObject.GetComponent<PlayerInventoryScript>() ) , true , state == RandomBoxStates.OpenAndChoose?  (GameManagerScript.BuyDelegate)BuyGun : (GameManagerScript.BuyDelegate)ActivateBox ) ;
 		}
 	}
 	

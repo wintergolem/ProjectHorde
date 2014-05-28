@@ -3,11 +3,11 @@ using System.Collections;
 
 public class PowerSwitchScript : MonoBehaviour {
 
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 
 	// Use this for initialization
 	void Start () {
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript> ();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript> ();
 	}
 	
 	// Update is called once per frame
@@ -20,7 +20,7 @@ public class PowerSwitchScript : MonoBehaviour {
 		if( c.tag == "Player" && !gameManager.bPowerOn)
 		{
 			gameManager.EndDisplay();
-			gameManager.DisplayInstruction( "Activate to Turn on the Power" , true , (GameMangerScript.BuyDelegate)(TurnOnPower) );
+			gameManager.DisplayInstruction( "Activate to Turn on the Power" , true , (GameManagerScript.BuyDelegate)(TurnOnPower) );
 		}
 	}
 	

@@ -11,7 +11,7 @@ public class GunClass
 	int iCurrentAmmoInClip;
 	float fReloadTime;
 	float fTimeReloading = 0;
-	bool bReloading = false;
+	public bool bReloading { get; private set; }
 
 	//Damage
 	float fDamage;
@@ -20,7 +20,7 @@ public class GunClass
 	float fShotsPerSecond;
 	float fTimeBetweenShots; //calculated from fShotsPerSecond
 	float fTimeSinceLastShot;
-	bool bFired = false;
+    public bool bFired = false; //temparory public 
 
 	//Name
 	public string sName { get ; private set; }
@@ -53,7 +53,7 @@ public class GunClass
 		{
 			if( rayCastHit.collider.tag == "Enemy")
 			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
+				rayCastHit.collider.gameObject.SendMessage( "Shot", new Vector2( fDamage , rayCastHit.point.y) , SendMessageOptions.DontRequireReceiver);
 			}
 		}
 
@@ -73,7 +73,7 @@ public class GunClass
 		{
 			if( rayCastHit.collider.tag == "Enemy")
 			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
+                rayCastHit.collider.gameObject.SendMessage("Shot", new Vector2(fDamage, rayCastHit.point.y), SendMessageOptions.DontRequireReceiver);
 			}
 		}
 	}
@@ -112,7 +112,7 @@ public class GunClass
             {
                 if (rayCastHit.collider.tag == "Enemy")
                 {
-                    rayCastHit.collider.gameObject.SendMessage("Shot", fDamage, SendMessageOptions.DontRequireReceiver);
+                    rayCastHit.collider.gameObject.SendMessage("Shot", new Vector2(fDamage, rayCastHit.point.y), SendMessageOptions.DontRequireReceiver);
                 }
             }
             Debug.DrawRay(a_v3Origin, a_v3Direction + rot, Color.cyan , 5 , false);
@@ -135,7 +135,7 @@ public class GunClass
 			rayCastHit = hits[i];
 			if( rayCastHit.collider.tag == "Enemy")
 			{
-				rayCastHit.collider.gameObject.SendMessage( "Shot", fDamage , SendMessageOptions.DontRequireReceiver);
+                rayCastHit.collider.gameObject.SendMessage("Shot", new Vector2(fDamage, rayCastHit.point.y), SendMessageOptions.DontRequireReceiver);
 			}
 			else 
 			{
@@ -208,6 +208,7 @@ public class GunClass
 				iCurrentAmmoInClip += iCurrentAmmo;
 				iCurrentAmmo = 0;
 			}
+            bReloading = false;
 		}
 	}
 
@@ -257,6 +258,8 @@ public class GunClass
 		fReloadTime = a_ReloadTime;
 		weaponType = a_weaponType;
 		Fire = a_fire;
+
+        bReloading = false;
 	}
 	
     //After adding new gun, add name to GameManagerScript's enum
@@ -323,7 +326,7 @@ public class GunClass
     public static GunClass Init_FarSight()
     {
         GunClass gun = new GunClass();
-        gun.Init("FarySight", 30, 2, 300, 0.3f, 200, 1, WeaponType.Rifle, gun.SniperFire);
+        gun.Init("FarSight", 30, 2, 300, 0.3f, 200, 1, WeaponType.Rifle, gun.SniperFire);
         return gun;
     }
 }

@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public float fHealingAmount = 5;
 
 	public Transform tFeet;
+    public Transform tGun;
 
 	public PlayerInventoryScript inventory;
 
@@ -27,12 +28,12 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 moveForce = Vector3.zero;
 
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 
 	// Use this for initialization
 	void Start () {
 		bGrounded = true;
-		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript> ();
+		gameManager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript> ();
 	}
 	
 	// Update is called once per frame
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour {
 		Move ();
 
 		if( Input.GetMouseButton( 0 ) )
-			inventory.gunInventory[inventory.iActiveIndex].Fire( transform.forward , transform.position );
+			inventory.gunInventory[inventory.iActiveIndex].Fire( tGun.forward , tGun.position );
 		if( Input.GetKeyDown( KeyCode.R ) )
 		{
 			inventory.Reload();

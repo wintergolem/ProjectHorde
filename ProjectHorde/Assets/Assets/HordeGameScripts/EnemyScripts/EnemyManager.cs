@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour {
 
 	BehaviorTree tree;
 
-	public GameMangerScript manager; //temp public
+	public GameManagerScript manager; //temp public
 
 	bool bReuseable;
 
@@ -45,7 +45,7 @@ public class EnemyManager : MonoBehaviour {
 	//private functions
 	void Start () 
 	{
-		manager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameMangerScript>();
+		manager = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManagerScript>();
 		enemies = new List<BasicZombieScript> ();
 		GameObject[] temp  = GameObject.FindGameObjectsWithTag ("Spawner");
 		spawners = new List<SpawnerScript> ();
@@ -157,5 +157,10 @@ public class EnemyManager : MonoBehaviour {
         else if (iCurrentWaveEnemyCount > iStartingEnemyCount + (iEnemyCountIncreaseAmount * manager.iCurrentWave))
             print("Error too any enemies spawned - EnemyManagerScript - AllEnemiesSpawned()");
         return false;
+    }
+
+    public void PlayerScorePassThrough( GameManagerScript.ScoreType a_type)
+    {
+        manager.Player1Score(a_type);
     }
 }

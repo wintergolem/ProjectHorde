@@ -9,10 +9,10 @@ public class TeleTriggerScript : MonoBehaviour {
 
 	public int iBuyCost = 0;
 
-    GameMangerScript gameManager;
+    GameManagerScript gameManager;
 	// Use this for initialization
 	void Start () {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameMangerScript>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +36,7 @@ public class TeleTriggerScript : MonoBehaviour {
             if( !bActive )
 				gameManager.DisplayInstruction("Turn On Power First" , false, null);
 			else if(!bTriggered )
-				gameManager.DisplayInstruction("Activate to Trigger" , true, (GameMangerScript.BuyDelegate)(TriggerPad));
+				gameManager.DisplayInstruction("Activate to Trigger" , true, (GameManagerScript.BuyDelegate)(TriggerPad));
         }
     }
 

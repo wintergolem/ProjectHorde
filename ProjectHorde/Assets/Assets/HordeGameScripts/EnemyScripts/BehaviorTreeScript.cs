@@ -40,12 +40,12 @@ public partial class BehaviorTree
 	List<Node> nodes;
 
 	PlayerInventoryScript player; //still has transfrom and such, plus we can how check for power-ups and whatnot
-	GameMangerScript gameManager;
+	GameManagerScript gameManager;
 	EnemyManager enemyManager;
 
 	bool bInitRun = false;
 
-	public void Init( PlayerInventoryScript a_player, GameMangerScript a_gameManager , EnemyManager a_enemyManager)
+	public void Init( PlayerInventoryScript a_player, GameManagerScript a_gameManager , EnemyManager a_enemyManager)
 	{
 		nodes = new List<Node> ();
 
