@@ -1,18 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HordeGameScripts\GameScripts\HUDManager.cs">
-    <Files>
-      <File FileName="Assets\HordeGameScripts\GameScripts\HUDManager.cs" Line="54" Column="1" />
-      <File FileName="Assets\HordeGameScripts\GameScripts\HUDManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\HordeGameScripts\EnemyScripts\EnemyManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\HordeGameScripts\PlayerScripts\GunClass.cs" Line="195" Column="1" />
-      <File FileName="Assets\HordeGameScripts\PlayerScripts\PlayerInventoryScript.cs" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Wintergolem\Documents\GitHub\ProjectHorde\ProjectHorde\Assets\Assets\HordeGameScripts\PlayerScripts\GunClass.cs" line="228" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
